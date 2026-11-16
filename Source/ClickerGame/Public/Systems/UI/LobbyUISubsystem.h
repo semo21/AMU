@@ -16,6 +16,7 @@ class CLICKERGAME_API ULobbyUISubsystem : public UMyWorldSubsystemBase
 
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	void InitializeHUD();
 protected:
 	virtual TSubclassOf<AGameModeBase> GetRequiredGameModeClass() const override;	
 };

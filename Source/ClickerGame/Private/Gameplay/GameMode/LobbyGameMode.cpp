@@ -2,4 +2,12 @@
 
 
 #include "Gameplay/GameMode/LobbyGameMode.h"
+#include "Systems/UI/LobbyUISubsystem.h"
 
+void ALobbyGameMode::BeginPlay() {
+	Super::BeginPlay();
+
+	if (auto* LobbyUI = GetWorld()->GetSubsystem<ULobbyUISubsystem>()) {
+		LobbyUI->InitializeHUD();
+	}
+}
