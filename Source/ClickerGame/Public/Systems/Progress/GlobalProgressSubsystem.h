@@ -10,11 +10,12 @@
 #include "GlobalProgressSubsystem.generated.h"
 
 class USaveManagerSubsystem;
+class UGlobalProgressSettings;
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Config=Game, DefaultConfig)
 class CLICKERGAME_API UGlobalProgressSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -35,4 +36,8 @@ private:
 	FGlobalProgressSnapshot GlobalProgressSnapshot;
 	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerRef;
+	UPROPERTY(Config)
+	TSoftObjectPtr<UGlobalProgressSettings> GlobalProgressSettingsAsset;
+	UPROPERTY(Transient)
+	TObjectPtr<UGlobalProgressSettings> GlobalProgressSettings;
 };
