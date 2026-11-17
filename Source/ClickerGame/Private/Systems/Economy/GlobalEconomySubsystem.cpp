@@ -3,10 +3,14 @@
 
 #include "Systems/Economy/GlobalEconomySubsystem.h"
 #include "Systems/Save/SaveManagerSubsystem.h"
-#include "Engine/GameInstance.h"
 
 void UGlobalEconomySubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
+
+	SaveManagerRef = Collection.InitializeDependency<USaveManagerSubsystem>();
+	if (SaveManagerRef) {
+		SaveManagerRef->LoadProgress(GlobalEconomySnapshot);
+	}	
 }
 
 void UGlobalEconomySubsystem::Deinitialize() {
@@ -15,18 +19,13 @@ void UGlobalEconomySubsystem::Deinitialize() {
 	}	
 	Super::Deinitialize();
 }
-void UGlobalEconomySubsystem::StartGame() {
-	if (bStarted) return;
-	bStarted = true;
-
-	if (UGameInstance* GI = GetGameInstance()) {
-		SaveManagerRef = GI->GetSubsystem<USaveManagerSubsystem>();
-	}
-	if (SaveManagerRef) {
-		SaveManagerRef->LoadProgress(GlobalEconomySnapshot);
-	}
-}
 
 void UGlobalEconomySubsystem::AddGlobalCurrency(double Amount) {
-	GlobalEconomySnapshot.GlobalCurrency += Amount;
+	if (SaveManagerRef) {
+		GlobalEconomySnapshot.GlobalCurrency += Amount;
+		SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("UGlobalEconomySubsystem::AddGlobalCurrency / SaveManagerRef is null"));
+	}
 }

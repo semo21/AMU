@@ -14,4 +14,6 @@ class CLICKERGAME_API ALobbyGameMode : public AMyGameModeBase
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void BeginPlay() override;
 };
