@@ -24,9 +24,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Economy|Meta")
 	void AddGlobalCurrency(double Amount);
+	bool TrySpendGlobalCurrency(double Amount);
 
 	const FGlobalEconomySnapshot& GetSnapshot() const { return GlobalEconomySnapshot; }
-
+	
 private:
 	UPROPERTY()	
 	FGlobalEconomySnapshot GlobalEconomySnapshot;
