@@ -22,15 +22,15 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable, Category = "Economy|Meta")
 	void AddGlobalCurrency(double Amount);
+	UFUNCTION(BlueprintCallable, Category = "Economy|Global")
 	bool TrySpendGlobalCurrency(double Amount);
-
+	UFUNCTION(BlueprintPure, Category = "Economy|Global")
 	const FGlobalEconomySnapshot& GetSnapshot() const { return GlobalEconomySnapshot; }
-	
+
 private:
-	UPROPERTY()	
+	UPROPERTY()
 	FGlobalEconomySnapshot GlobalEconomySnapshot;
-	UPROPERTY()	
+	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerRef;
 };
