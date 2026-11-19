@@ -57,9 +57,8 @@ void APortal::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 void APortal::Interact() {
 	UE_LOG(LogTemp, Warning, TEXT("Portal Interact"));
 	auto* GlobalProgress = GetGameInstance()->GetSubsystem<UGlobalProgressSubsystem>();
-	if (GlobalProgress && GlobalProgress->IsLevelUnlocked(TargetLevelTag)) {
+	if (GlobalProgress->IsLevelUnlocked(TargetLevelTag) || GlobalProgress->TryUnlockLevel(TargetLevelTag)) {
 		UGameplayStatics::OpenLevel(this, TargetLevelName);
 	}
-
 }
 
