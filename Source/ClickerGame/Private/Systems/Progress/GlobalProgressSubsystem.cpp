@@ -11,7 +11,7 @@ void UGlobalProgressSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 	GlobalProgressSettings = GlobalProgressSettingsAsset.LoadSynchronous();
 	check(GlobalProgressSettings);
-	
+
 	SaveManagerRef = Collection.InitializeDependency<USaveManagerSubsystem>();
 	check(SaveManagerRef);
 
@@ -19,10 +19,8 @@ void UGlobalProgressSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 	GlobalEconomyRef = Collection.InitializeDependency<UGlobalEconomySubsystem>();
 	check(GlobalEconomyRef);
-	
-	if (GlobalProgressSnapshot.UnlockedLevels.IsEmpty()) {
-		GlobalProgressSnapshot.UnlockedLevels.AppendTags(GlobalProgressSettings->InitialUnlockedLevel);
-	}
+
+	GlobalProgressSnapshot.UnlockedLevels.AppendTags(GlobalProgressSettings->InitialUnlockedLevel);
 }
 
 void UGlobalProgressSubsystem::Deinitialize()
