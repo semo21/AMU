@@ -31,7 +31,7 @@ private:
 	UPROPERTY(Config)
 	TSoftObjectPtr<UDefenseUISettings> UISettingsAsset;
 
-	UPROPERTY()
+	UPROPERTY(Transient)
 	TObjectPtr<UDefenseUISettings> UISettings;
 
 	UPROPERTY()
