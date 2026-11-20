@@ -9,6 +9,7 @@
 #include "Portal.generated.h"
 
 class UBoxComponent;
+class AMyPlayerControllerBase;
 
 UCLASS()
 class CLICKERGAME_API APortal : public AActor
@@ -19,7 +20,7 @@ public:
 	// Sets default values for this actor's properties
 	APortal();
 
-	virtual void Interact();
+	virtual void Interact(AMyPlayerControllerBase* Interactor);
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

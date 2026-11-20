@@ -10,15 +10,15 @@ void UGlobalProgressSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 	GlobalProgressSettings = GlobalProgressSettingsAsset.LoadSynchronous();
-	check(GlobalProgressSettings);
+	checkf(GlobalProgressSettings, TEXT("DA_GlobalProgressSettings failed to load"));
 
 	SaveManagerRef = Collection.InitializeDependency<USaveManagerSubsystem>();
-	check(SaveManagerRef);
+	checkf(SaveManagerRef, TEXT("SaveManagerRef failed to load"));
 
 	SaveManagerRef->LoadProgress(GlobalProgressSnapshot);
 
 	GlobalEconomyRef = Collection.InitializeDependency<UGlobalEconomySubsystem>();
-	check(GlobalEconomyRef);
+	checkf(GlobalEconomyRef,TEXT("GlobalEconomyRef failed to load"));
 
 	GlobalProgressSnapshot.UnlockedLevels.AppendTags(GlobalProgressSettings->InitialUnlockedLevel);
 }
@@ -40,18 +40,28 @@ bool UGlobalProgressSubsystem::TryUnlockLevel(const FGameplayTag& LevelTag) {
 		return false;
 	}
 
-	const double* Price = GlobalProgressSettings->UnlockPrices.Find(LevelTag);
-	if (!Price) {
+	double Price = 0.0;
+	if (!GetUnlockPrice(LevelTag, Price)) {
 		UE_LOG(LogTemp, Warning, TEXT("UGlobalProgressSubsystem::TryUnlockLevel / No price in the DA"));
 		return false;
 	}
 
-	if (!GlobalEconomyRef->TrySpendGlobalCurrency(*Price)) {
+	if (!GlobalEconomyRef->TrySpendGlobalCurrency(Price)) {
 		return false;
 	}
 
 	UnlockLevel(LevelTag);
 	SaveManagerRef->SaveProgress(GlobalProgressSnapshot);
+	return true;
+}
+
+bool UGlobalProgressSubsystem::GetUnlockPrice(const FGameplayTag& LevelTag, double& OutPrice) const {
+	const double* Price = GlobalProgressSettings->UnlockPrices.Find(LevelTag);
+	if (!Price) {		
+		return false;
+	}
+
+	OutPrice = *Price;
 	return true;
 }
 

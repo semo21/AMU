@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Gameplay/Player/MyPlayerControllerBase.h"
+
+#include "GameplayTagContainer.h"
 #include "LobbyPlayerController.generated.h"
 
 /**
@@ -13,5 +15,7 @@ UCLASS()
 class CLICKERGAME_API ALobbyPlayerController : public AMyPlayerControllerBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void RequestLevelUnlock(const FGameplayTag& LevelTag) override;
 };

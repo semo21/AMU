@@ -29,6 +29,8 @@ public:
 	bool IsLevelUnlocked(const FGameplayTag& LevelTag) const;
 	UFUNCTION(BlueprintCallable, Category = "Progress")
 	bool TryUnlockLevel(const FGameplayTag& LevelTag);
+	UFUNCTION(BlueprintPure, Category="Progress")
+	bool GetUnlockPrice(const FGameplayTag& LevelTag, double& OutPrice) const;
 	const FGlobalProgressSnapshot& GetSnapshot() const { return GlobalProgressSnapshot; }
 
 private:

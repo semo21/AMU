@@ -16,7 +16,10 @@ class CLICKERGAME_API AMyPlayerControllerBase : public APlayerController
 {
 	GENERATED_BODY()	
 public:
-	UFUNCTION()	virtual void HandleActionButtonClicked(const FGameplayTag& ActionTag);
+	UFUNCTION()	
+	virtual void HandleActionButtonClicked(const FGameplayTag& ActionTag);
+	virtual void RequestLevelUnlock(const FGameplayTag& LevelTag);
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;

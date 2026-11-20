@@ -26,3 +26,7 @@ void AMyPlayerControllerBase::SetupInputComponent() {
 	}
 }
 
+void AMyPlayerControllerBase::RequestLevelUnlock(const FGameplayTag& LevelTag) {
+	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerControllerBase::RequestLevelUnlock / unlock not available in this level: %s"), *LevelTag.ToString());
+}
+

@@ -10,6 +10,8 @@
 #include "GlobalEconomySubsystem.generated.h"
 
 class USaveManagerSubsystem;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGlobalEconomyChanged, const FGlobalEconomySnapshot&, Snapshot);
 /**
  *
  */
@@ -27,6 +29,8 @@ public:
 	bool TrySpendGlobalCurrency(double Amount);
 	UFUNCTION(BlueprintPure, Category = "Economy|Global")
 	const FGlobalEconomySnapshot& GetSnapshot() const { return GlobalEconomySnapshot; }
+	UPROPERTY(BlueprintAssignable, Category="Economy|Global")
+	FOnGlobalEconomyChanged OnGlobalEconomyChanged;
 
 private:
 	UPROPERTY()

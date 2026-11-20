@@ -3,6 +3,7 @@
 
 #include "Gameplay/Character/MyCharacter.h"
 #include "Gameplay/Actors/Portal.h"
+#include "Gameplay/Player/MyPlayerControllerBase.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -49,6 +50,6 @@ void AMyCharacter::TryInteract() {
 		UE_LOG(LogTemp, Warning, TEXT("No portal to interact with"));
 		return;
 	}
-	CurrentPortal->Interact();
+	CurrentPortal->Interact(Cast<AMyPlayerControllerBase>(GetController()));
 }
 
