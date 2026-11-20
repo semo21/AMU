@@ -8,24 +8,34 @@ void UGlobalEconomySubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 
 	SaveManagerRef = Collection.InitializeDependency<USaveManagerSubsystem>();
-	if (SaveManagerRef) {
-		SaveManagerRef->LoadProgress(GlobalEconomySnapshot);
-	}	
-}
+	check(SaveManagerRef);
 
+	SaveManagerRef->LoadProgress(GlobalEconomySnapshot);
+}
 void UGlobalEconomySubsystem::Deinitialize() {
-	if (SaveManagerRef) {
-		SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
-	}	
+	SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+
 	Super::Deinitialize();
 }
 
 void UGlobalEconomySubsystem::AddGlobalCurrency(double Amount) {
-	if (SaveManagerRef) {
-		GlobalEconomySnapshot.GlobalCurrency += Amount;
-		SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+	GlobalEconomySnapshot.GlobalCurrency += Amount;
+	SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+}
+
+bool UGlobalEconomySubsystem::TrySpendGlobalCurrency(double Amount) {
+	if (Amount <= 0.0) {
+		UE_LOG(LogTemp, Warning, TEXT("GlobalEconomySubsystem::TrySpendGlobalCurrency / Price is wrong"));
+		return false;
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("UGlobalEconomySubsystem::AddGlobalCurrency / SaveManagerRef is null"));
+
+	if (GlobalEconomySnapshot.GlobalCurrency < Amount) {
+		UE_LOG(LogTemp, Warning, TEXT("GlobalEconomySubsystem::TrySpendGlobalCurrency / Need more global currency"));
+		return false;
 	}
+
+	GlobalEconomySnapshot.GlobalCurrency -= Amount;
+	SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+	UE_LOG(LogTemp, Warning, TEXT("Spending global currency successfully, global currecy: %.2f"), GlobalEconomySnapshot.GlobalCurrency);
+	return true;
 }

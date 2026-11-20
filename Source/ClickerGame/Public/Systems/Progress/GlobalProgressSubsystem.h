@@ -10,11 +10,13 @@
 #include "GlobalProgressSubsystem.generated.h"
 
 class USaveManagerSubsystem;
+class UGlobalProgressSettings;
+class UGlobalEconomySubsystem;
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Config=Game, DefaultConfig)
 class CLICKERGAME_API UGlobalProgressSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -23,16 +25,23 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable, Category="Progress")
+	UFUNCTION(BlueprintPure, Category="Progress")
 	bool IsLevelUnlocked(const FGameplayTag& LevelTag) const;
-	UFUNCTION(BlueprintCallable, Category="Progress")
-	void UnlockLevel(const FGameplayTag& LevelTag);
-
+	UFUNCTION(BlueprintCallable, Category = "Progress")
+	bool TryUnlockLevel(const FGameplayTag& LevelTag);
 	const FGlobalProgressSnapshot& GetSnapshot() const { return GlobalProgressSnapshot; }
 
 private:
+	void UnlockLevel(const FGameplayTag& LevelTag);
+
 	UPROPERTY()
 	FGlobalProgressSnapshot GlobalProgressSnapshot;
 	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerRef;
+	UPROPERTY()
+	TObjectPtr<UGlobalEconomySubsystem> GlobalEconomyRef;
+	UPROPERTY(Config)
+	TSoftObjectPtr<UGlobalProgressSettings> GlobalProgressSettingsAsset;
+	UPROPERTY(Transient)
+	TObjectPtr<UGlobalProgressSettings> GlobalProgressSettings;
 };
