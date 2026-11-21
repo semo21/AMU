@@ -21,6 +21,7 @@ void UGlobalEconomySubsystem::Deinitialize() {
 void UGlobalEconomySubsystem::AddGlobalCurrency(double Amount) {
 	GlobalEconomySnapshot.GlobalCurrency += Amount;
 	SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
+	OnGlobalEconomyChanged.Broadcast(GlobalEconomySnapshot);
 }
 
 bool UGlobalEconomySubsystem::TrySpendGlobalCurrency(double Amount) {
@@ -37,5 +38,6 @@ bool UGlobalEconomySubsystem::TrySpendGlobalCurrency(double Amount) {
 	GlobalEconomySnapshot.GlobalCurrency -= Amount;
 	SaveManagerRef->SaveProgress(GlobalEconomySnapshot);
 	UE_LOG(LogTemp, Warning, TEXT("Spending global currency successfully, global currecy: %.2f"), GlobalEconomySnapshot.GlobalCurrency);
+	OnGlobalEconomyChanged.Broadcast(GlobalEconomySnapshot);
 	return true;
 }

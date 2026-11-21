@@ -2,11 +2,12 @@
 
 
 #include "Gameplay/Actors/Portal.h"
-#include "Components/BoxComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Gameplay/Character/MyCharacter.h"
+#include "Gameplay/Player/MyPlayerControllerBase.h"
 #include "Systems/Progress/GlobalProgressSubsystem.h"
 
+#include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 APortal::APortal()
 {
@@ -54,11 +55,12 @@ void APortal::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	}
 }
 
-void APortal::Interact() {
-	UE_LOG(LogTemp, Warning, TEXT("Portal Interact"));
+void APortal::Interact(AMyPlayerControllerBase* Interactor) {
 	auto* GlobalProgress = GetGameInstance()->GetSubsystem<UGlobalProgressSubsystem>();
-	if (GlobalProgress->IsLevelUnlocked(TargetLevelTag) || GlobalProgress->TryUnlockLevel(TargetLevelTag)) {
+	if (GlobalProgress->IsLevelUnlocked(TargetLevelTag)) {
 		UGameplayStatics::OpenLevel(this, TargetLevelName);
+		return;
 	}
+	Interactor->RequestLevelUnlock(TargetLevelTag);
 }
 

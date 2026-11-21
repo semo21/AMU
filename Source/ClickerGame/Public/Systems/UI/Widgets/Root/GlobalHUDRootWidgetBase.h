@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GlobalHUDRootWidgetBase.generated.h"
 
+class UOverlay;
 /**
  * 
  */
@@ -14,14 +15,18 @@ class CLICKERGAME_API UGlobalHUDRootWidgetBase : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	void ShowModal(UUserWidget* ModalWidget);
+	void ClearModal();
+
 protected:
 	UPROPERTY(meta = (BindWidgetOptional), BlueprintReadOnly)
-	TObjectPtr<UPanelWidget> ToastPanel;
+	TObjectPtr<UPanelWidget> ToastLayer;
 
 	UPROPERTY(meta = (BindWidgetOptional), BlueprintReadOnly)
-	TObjectPtr<UPanelWidget> FloatingTextPanel;
+	TObjectPtr<UPanelWidget> FloatingLayer;
 
 	UPROPERTY(meta = (BindWidgetOptional), BlueprintReadOnly)
-	TObjectPtr<UPanelWidget> ModalLayer;
+	TObjectPtr<UOverlay> ModalLayer;
 
 };
