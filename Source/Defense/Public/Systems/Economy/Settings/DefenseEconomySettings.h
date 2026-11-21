@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class HUBCORE_API UDefenseEconomySettings : public UPrimaryDataAsset
+class DEFENSE_API UDefenseEconomySettings : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 	

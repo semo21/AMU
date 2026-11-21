@@ -12,7 +12,7 @@ class UDefenseResultWidget;
  *
  */
 UCLASS()
-class HUBCORE_API UDefenseUISettings : public UPrimaryDataAsset
+class DEFENSE_API UDefenseUISettings : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 

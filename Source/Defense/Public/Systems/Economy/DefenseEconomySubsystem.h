@@ -14,7 +14,7 @@ class UDefenseEconomySettings;
  * 
  */
 UCLASS(Config=Game, DefaultConfig)
-class HUBCORE_API UDefenseEconomySubsystem : public UMyWorldSubsystemBase
+class DEFENSE_API UDefenseEconomySubsystem : public UMyWorldSubsystemBase
 {
 	GENERATED_BODY()
 

@@ -14,7 +14,7 @@ class ADefenseGridManager;
 DECLARE_MULTICAST_DELEGATE(FOnDefenseEnemyReachedGoal);
 
 UCLASS()
-class HUBCORE_API ADefenseEnemyBase : public AActor
+class DEFENSE_API ADefenseEnemyBase : public AActor
 {
 	GENERATED_BODY()
 

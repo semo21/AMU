@@ -13,7 +13,7 @@ class ADefenseEnemyBase;
  *
  */
 UCLASS()
-class HUBCORE_API ADefenseGameMode : public AMyGameModeBase
+class DEFENSE_API ADefenseGameMode : public AMyGameModeBase
 {
 	GENERATED_BODY()
 public:

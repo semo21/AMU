@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 public class ClickerGameTarget : TargetRules
 {
-	public ClickerGameTarget(TargetInfo Target) : base(Target)
-	{
-		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
-		ExtraModuleNames.Add("HubCore");
-	}
+    public ClickerGameTarget(TargetInfo Target) : base(Target)
+    {
+        Type = TargetType.Game;
+        DefaultBuildSettings = BuildSettingsVersion.V5;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
+        ExtraModuleNames.AddRange(new string[] { "HubCore", "Defense" });
+    }
 }

@@ -14,7 +14,7 @@ class ADefenseTowerBase;
  * 
  */
 UCLASS()
-class HUBCORE_API ADefensePlayerController : public AMyPlayerControllerBase
+class DEFENSE_API ADefensePlayerController : public AMyPlayerControllerBase
 {
 	GENERATED_BODY()
 	

@@ -15,7 +15,7 @@ class AMyPlayerController;
  * 
  */
 UCLASS(Config=Game, DefaultConfig)
-class HUBCORE_API UDefenseUISubsystem : public UMyWorldSubsystemBase
+class DEFENSE_API UDefenseUISubsystem : public UMyWorldSubsystemBase
 {
 	GENERATED_BODY()
 	

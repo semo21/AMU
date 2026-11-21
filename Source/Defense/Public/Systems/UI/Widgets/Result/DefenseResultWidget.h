@@ -15,7 +15,7 @@ class UButton;
  * 
  */
 UCLASS(Abstract)
-class HUBCORE_API UDefenseResultWidget : public UUserWidget
+class DEFENSE_API UDefenseResultWidget : public UUserWidget
 {
 	GENERATED_BODY()
 

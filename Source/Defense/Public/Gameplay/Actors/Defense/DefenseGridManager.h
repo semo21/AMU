@@ -22,7 +22,7 @@ struct FDefenseTileData {
 DECLARE_MULTICAST_DELEGATE(FOnDefensePathChanged);
 
 UCLASS()
-class HUBCORE_API ADefenseGridManager : public AActor
+class DEFENSE_API ADefenseGridManager : public AActor
 {
 	GENERATED_BODY()
 	

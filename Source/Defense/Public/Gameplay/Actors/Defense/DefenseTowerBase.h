@@ -11,7 +11,7 @@ class UStaticMeshComponent;
 class ADefenseEnemyBase;
 
 UCLASS()
-class HUBCORE_API ADefenseTowerBase : public AActor
+class DEFENSE_API ADefenseTowerBase : public AActor
 {
 	GENERATED_BODY()
 
