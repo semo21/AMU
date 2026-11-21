@@ -7,9 +7,11 @@
 
 #include "SaveManagerSubsystem.generated.h"
 
-struct FClickerEconomySnapshot;
 struct FGlobalEconomySnapshot;
 struct FGlobalProgressSnapshot;
+
+struct FGameplayTag;
+struct FInstancedStruct;
 class UPlayerSaveGame;
 /**
  * 
@@ -22,8 +24,8 @@ class CLICKERGAME_API USaveManagerSubsystem : public UGameInstanceSubsystem
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
-	void SaveProgress(const FClickerEconomySnapshot& Snapshot);	
-	bool LoadProgress(FClickerEconomySnapshot& OutSnapshot);
+	void SaveLevelSnapshot(const FGameplayTag& LevelTag, const FInstancedStruct& Snapshot);
+	bool LoadLevelSnapshot(const FGameplayTag& LevelTag, FInstancedStruct& OutSnapshot) const;
 
 	void SaveProgress(const FGlobalEconomySnapshot& Snapshot);
 	bool LoadProgress(FGlobalEconomySnapshot& OutSnapshot);

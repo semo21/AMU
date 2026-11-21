@@ -2,12 +2,13 @@
 
 
 #include "Systems/Save/SaveManagerSubsystem.h"
-#include "Systems/Economy/Data/ClickerEconomySnapshot.h"
 #include "Systems/Economy/Data/GlobalEconomySnapshot.h"
 #include "Systems/Progress/Data/GlobalProgressSnapshot.h"
 #include "Systems/Save/Data/PlayerSaveGame.h"
 
+#include "GameplayTagContainer.h"
 #include "Kismet/GameplayStatics.h"
+#include "InstancedStruct.h"
 
 void USaveManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
@@ -21,22 +22,16 @@ void USaveManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	}
 }
 
-void USaveManagerSubsystem::SaveProgress(const FClickerEconomySnapshot& S) {
-	FClickerEconomySnapshot Stamped = S;
-	Stamped.LastSaveTime = FDateTime::UtcNow().ToUnixTimestamp();
-
-	SaveGameObject->LevelSnapshots.Add(TEXT("Clicker"), FInstancedStruct::Make<FClickerEconomySnapshot>(Stamped));
+void USaveManagerSubsystem::SaveLevelSnapshot(const FGameplayTag& LevelTag, const FInstancedStruct& Snapshot) {
+	SaveGameObject->LevelSnapshots.Add(LevelTag, Snapshot);
 	UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveSlotName, UserIndex);
 }
 
-bool USaveManagerSubsystem::LoadProgress(FClickerEconomySnapshot& Out) {
-	const FInstancedStruct* Found = SaveGameObject->LevelSnapshots.Find(TEXT("Clicker"));
+bool USaveManagerSubsystem::LoadLevelSnapshot(const FGameplayTag& LevelTag, FInstancedStruct& OutSnapshot) const {
+	const FInstancedStruct* Found = SaveGameObject->LevelSnapshots.Find(LevelTag);
 	if (!Found) return false;
 
-	const FClickerEconomySnapshot* Snapshot = Found->GetPtr<FClickerEconomySnapshot>();
-	if (!Snapshot) return false;
-
-	Out = *Snapshot;
+	OutSnapshot = *Found;
 	return true;
 }
 

@@ -9,11 +9,12 @@
 
 #include "ClickerEconomySubsystem.generated.h"
 
+class UClickerUISubsystem;
+class USaveManagerSubsystem;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChanged, const FClickerEconomySnapshot&, Snapshot);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPassiveIncome, double, AmountPerSec);
 
-class UClickerUISubsystem;
-class USaveManagerSubsystem;
 /**
  * 
  */
