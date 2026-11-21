@@ -1,0 +1,27 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/DataAsset.h"
+#include "ClickerUISettings.generated.h"
+
+class UClickerHUDRootWidget;
+class UUserWidget;
+class UIdleRewardTextWidget;
+class UClickFloatingTextWidget;
+class USoundBase;
+class UToastWidgetBase;
+/**
+ * 
+ */
+UCLASS()
+class HUBCORE_API UClickerUISettings : public UPrimaryDataAsset
+{
+	GENERATED_BODY()
+	
+public:
+	UPROPERTY(EditDefaultsOnly, Category = "UI") TSubclassOf<UToastWidgetBase> IdleRewardTextWidgetClass;
+	UPROPERTY(EditDefaultsOnly, Category = "UI") TSubclassOf<UToastWidgetBase> FloatingTextWidgetClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")	TSoftObjectPtr<USoundBase> OfflineRewardSound;
+};
