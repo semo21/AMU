@@ -3,14 +3,18 @@
 
 #include "Systems/Economy/ClickerEconomySubsystem.h"
 
+#include "Gameplay/GameMode/ClickerGameMode.h"
+#include "Systems/Save/SaveManagerSubsystem.h"
+#include "Systems/UI/Widgets/Toast/IdleRewardTextWidget.h"
+
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "InstancedStruct.h"
+#include "NativeGameplayTags.h"
 
-#include "Gameplay/GameMode/ClickerGameMode.h"
-#include "Systems/Save/SaveManagerSubsystem.h"
-#include "Systems/UI/Widgets/Toast/IdleRewardTextWidget.h"
+UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Level_Clicker, "Level.Clicker");
 
 void UClickerEconomySubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
@@ -65,23 +69,25 @@ bool UClickerEconomySubsystem::TryUpgrade() {
 void UClickerEconomySubsystem::RequestSave() {
 	if (SaveManagerSubsystemRef) {
 		FClickerEconomySnapshot Out = MakeSnapshot();
+		Out.LastSaveTime = FDateTime::UtcNow().ToUnixTimestamp();
 
-		SaveManagerSubsystemRef->SaveProgress(Out);
+		SaveManagerSubsystemRef->SaveLevelSnapshot(TAG_Level_Clicker, FInstancedStruct::Make(Out));
 	}
 }
 
 void UClickerEconomySubsystem::RequestLoad() {
-
 	if (SaveManagerSubsystemRef) {
-		FClickerEconomySnapshot In;
-		if (SaveManagerSubsystemRef->LoadProgress(In)) {
-			UpdateLastOfflineReward(In);
-			ApplySnapshot(In);
-			RequestSave();
+		FInstancedStruct Saved;
+		if (SaveManagerSubsystemRef->LoadLevelSnapshot(TAG_Level_Clicker, Saved)) {
+			if (const FClickerEconomySnapshot* Loaded = Saved.GetPtr<FClickerEconomySnapshot>()) {
+				FClickerEconomySnapshot In = *Loaded;
+				UpdateLastOfflineReward(In);
+				ApplySnapshot(In);
+				RequestSave();
+				return;
+			}			
 		}
-		else {
-			Broadcast();
-		}
+		Broadcast();
 	}
 }
 
