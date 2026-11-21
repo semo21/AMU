@@ -3,11 +3,11 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class ClickerGameEditorTarget : TargetRules
+public class AmuTarget : TargetRules
 {
-    public ClickerGameEditorTarget(TargetInfo Target) : base(Target)
+    public AmuTarget(TargetInfo Target) : base(Target)
     {
-        Type = TargetType.Editor;
+        Type = TargetType.Game;
         DefaultBuildSettings = BuildSettingsVersion.V5;
         IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
         ExtraModuleNames.AddRange(new string[] { "HubCore", "Lobby", "Clicker", "Defense" });

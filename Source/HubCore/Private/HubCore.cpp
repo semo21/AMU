@@ -3,4 +3,4 @@
 #include "HubCore.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, HubCore, "ClickerGame" );
+IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, HubCore, "Amu" );
