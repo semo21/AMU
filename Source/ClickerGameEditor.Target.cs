@@ -10,6 +10,6 @@ public class ClickerGameEditorTarget : TargetRules
         Type = TargetType.Editor;
         DefaultBuildSettings = BuildSettingsVersion.V5;
         IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
-        ExtraModuleNames.AddRange(new string[] { "HubCore", "Defense" });
+        ExtraModuleNames.AddRange(new string[] { "HubCore", "Lobby", "Clicker", "Defense" });
     }
 }

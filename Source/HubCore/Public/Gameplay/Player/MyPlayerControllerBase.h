@@ -8,9 +8,6 @@
 
 #include "MyPlayerControllerBase.generated.h"
 
-class UClickFloatingTextWidget;
-class UIdleRewardTextWidget;
-
 UCLASS()
 class HUBCORE_API AMyPlayerControllerBase : public APlayerController
 {
