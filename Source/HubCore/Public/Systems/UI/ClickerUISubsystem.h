@@ -34,7 +34,7 @@ public:
 	void BindEconomySubsystem(UClickerEconomySubsystem* Eco);
 	void ShowFloatingText(const FString& Message, const FVector& WorldLocation);
 	void ShowReward(double Amount, bool bIsOffline);
-	const FActionButtonDefinition* FindActionButtonDefinition(const FGameplayTag& Tag) const;
+	const UActionButtonRegistry* GetActionButtonRegistry() const { return ActionButtonRegistry; }
 	UFUNCTION()	
 	void OnEconomyChanged(const FClickerEconomySnapshot& Snapshot);
 	UFUNCTION() 

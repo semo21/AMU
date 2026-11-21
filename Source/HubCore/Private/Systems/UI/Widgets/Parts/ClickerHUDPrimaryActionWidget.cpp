@@ -11,12 +11,12 @@
 void UClickerHUDPrimaryActionWidget::InitializePart_Implementation(UClickerUISubsystem* InUI, AClickerPlayerController* InPC){
 	Super::InitializePart_Implementation(InUI, InPC);
 	if (Btn_Upgrade && UpgradeActionTag.IsValid()) {
-		Btn_Upgrade->InitializeButton(InPC, InUI, UpgradeActionTag);
+		Btn_Upgrade->InitializeButton(InPC, InUI->GetActionButtonRegistry(), UpgradeActionTag);
 	}
 	if (Btn_Boost && BoostActionTag.IsValid()) {
-		Btn_Boost->InitializeButton(InPC, InUI, BoostActionTag);
+		Btn_Boost->InitializeButton(InPC, InUI->GetActionButtonRegistry(), BoostActionTag);
 	}
 	if (Btn_Test && TestActionTag.IsValid()) {
-		Btn_Test->InitializeButton(InPC, InUI, TestActionTag);
+		Btn_Test->InitializeButton(InPC, InUI->GetActionButtonRegistry(), TestActionTag);
 	}
 }

@@ -10,9 +10,9 @@
 void UClickerHUDDevButtonsWidget::InitializePart_Implementation(UClickerUISubsystem* InUI, AClickerPlayerController* InPC) {
 	Super::InitializePart_Implementation(InUI, InPC);
 	if (Btn_Save && SaveActionTag.IsValid()) {
-		Btn_Save->InitializeButton(InPC, InUI, SaveActionTag);
+		Btn_Save->InitializeButton(InPC, InUI->GetActionButtonRegistry(), SaveActionTag);
 	}
 	if (Btn_Load && LoadActionTag.IsValid()) {
-		Btn_Load->InitializeButton(InPC, InUI, LoadActionTag);
+		Btn_Load->InitializeButton(InPC, InUI->GetActionButtonRegistry(), LoadActionTag);
 	}	
 }

@@ -6,12 +6,12 @@
 #include "Components/Image.h"
 #include "Components/WidgetSwitcher.h"
 
-#include "Systems/UI/ClickerUISubsystem.h"
+#include "Systems/UI/Data/ActionButton/ActionButtonRegistry.h"
 #include "Gameplay/Player/MyPlayerControllerBase.h"
 
-void UActionButtonWidget::InitializeButton(AMyPlayerControllerBase* InPC, UClickerUISubsystem* InUI, FGameplayTag InTag) {
+void UActionButtonWidget::InitializeButton(AMyPlayerControllerBase* InPC, const UActionButtonRegistry* InRegistry, FGameplayTag InTag) {
 	CachedPC = InPC;
-	CachedUI = InUI;
+	CachedRegistry = InRegistry;
 	ActionTag = InTag;
 	SynchronizeProperties();
 }
@@ -19,8 +19,8 @@ void UActionButtonWidget::InitializeButton(AMyPlayerControllerBase* InPC, UClick
 const FActionButtonDefinition* UActionButtonWidget::GetDefinition() const {
 	if (!ActionTag.IsValid())	return nullptr;
 
-	if (CachedUI.IsValid()) {
-		return CachedUI->FindActionButtonDefinition(ActionTag);
+	if (CachedRegistry.IsValid()) {
+		return CachedRegistry->Find(ActionTag);
 	}
 
 	return nullptr;
@@ -70,7 +70,7 @@ void UActionButtonWidget::SetMode(EActionButtonMode InMode) {
 }
 
 void UActionButtonWidget::HandleClicked() {
-	if (!CachedPC.IsValid() || !CachedUI.IsValid() || !ActionTag.IsValid()) {
+	if (!CachedPC.IsValid() || !ActionTag.IsValid()) {
 		return;
 	}
 

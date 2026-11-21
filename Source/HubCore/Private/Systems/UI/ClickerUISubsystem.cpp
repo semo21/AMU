@@ -77,12 +77,6 @@ void UClickerUISubsystem::BindEconomySubsystem(UClickerEconomySubsystem* Eco) {
 	OnEconomyChangedUI.Broadcast(CachedClickerEconomySnapshot);
 }
 
-const FActionButtonDefinition* UClickerUISubsystem::FindActionButtonDefinition(const FGameplayTag& Tag) const {
-	if (!ActionButtonRegistry || !Tag.IsValid()) return nullptr;
-
-	return ActionButtonRegistry->Find(Tag);
-}
-
 void UClickerUISubsystem::OnEconomyChanged(const FClickerEconomySnapshot& Snapshot) {
 	CachedClickerEconomySnapshot = Snapshot;
 	OnEconomyChangedUI.Broadcast(CachedClickerEconomySnapshot);
