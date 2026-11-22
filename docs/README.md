@@ -92,6 +92,7 @@ graph BT
 - logs
   - [Devlog](./devlog/)
   - [Changelog](./logs/changelog.md)
+  - [Release Notes](./release/)
 - testing
   - [Test Cases](./testing/test_cases.md)
 
