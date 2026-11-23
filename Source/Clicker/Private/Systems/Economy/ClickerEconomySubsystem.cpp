@@ -55,14 +55,16 @@ void UClickerEconomySubsystem::OnTick1Second() {
 
 bool UClickerEconomySubsystem::TryUpgrade() {
 	const double UpgradeCost = GetUpgradeCost();
-	if (ClickerEconomySnapshot.Currency < UpgradeCost) return false;
-
+	if (ClickerEconomySnapshot.Currency < UpgradeCost) {
+		return false;
+	}
 	ClickerEconomySnapshot.Currency -= UpgradeCost;
 	ClickerEconomySnapshot.UpgradeLevel++;
 	ClickerEconomySnapshot.CurrencyPerClick += 1.0;
 	ClickerEconomySnapshot.CurrencyPerSecond += 0.5;
 
 	Broadcast();
+	RequestSave();
 	return true;
 }
 
