@@ -21,23 +21,27 @@ void UClickerEconomySubsystem::Initialize(FSubsystemCollectionBase& Collection) 
 }
 
 void UClickerEconomySubsystem::Deinitialize() {
-	RequestSave();
-	StopAutoSaveTimer(); 
-	StopTickTimer();
+	if (bWorldStarted) {
+		RequestSave();
+		StopAutoSaveTimer();
+		StopTickTimer();
+	}
 
 	Super::Deinitialize();
 }
 
-void UClickerEconomySubsystem::StartWorld(UWorld* World) {
-	if (!World || bWorldStarted) return;
-
+void UClickerEconomySubsystem::StartWorld() {
 	bWorldStarted = true;
 
-	if (UGameInstance* GI = World->GetGameInstance()) {
-		SaveManagerSubsystemRef = GI->GetSubsystem<USaveManagerSubsystem>();
-	}
+	SaveManagerSubsystemRef = GetWorld()->GetGameInstance()->GetSubsystem<USaveManagerSubsystem>();
+	check(SaveManagerSubsystemRef);
 
-	RequestLoad();
+	if (RequestLoad()) {
+		UpdateLastOfflineReward(ClickerEconomySnapshot);
+		RequestSave();
+	}
+	Broadcast();
+
 	StartAutoSaveTimer();
 	StartTickTimer();
 }
@@ -69,28 +73,21 @@ bool UClickerEconomySubsystem::TryUpgrade() {
 }
 
 void UClickerEconomySubsystem::RequestSave() {
-	if (SaveManagerSubsystemRef) {
-		FClickerEconomySnapshot Out = MakeSnapshot();
-		Out.LastSaveTime = FDateTime::UtcNow().ToUnixTimestamp();
+	FClickerEconomySnapshot Out = MakeSnapshot();
+	Out.LastSaveTime = FDateTime::UtcNow().ToUnixTimestamp();
 
-		SaveManagerSubsystemRef->SaveLevelSnapshot(TAG_Level_Clicker, FInstancedStruct::Make(Out));
-	}
+	SaveManagerSubsystemRef->SaveLevelSnapshot(TAG_Level_Clicker, FInstancedStruct::Make(Out));
 }
 
-void UClickerEconomySubsystem::RequestLoad() {
-	if (SaveManagerSubsystemRef) {
-		FInstancedStruct Saved;
-		if (SaveManagerSubsystemRef->LoadLevelSnapshot(TAG_Level_Clicker, Saved)) {
-			if (const FClickerEconomySnapshot* Loaded = Saved.GetPtr<FClickerEconomySnapshot>()) {
-				FClickerEconomySnapshot In = *Loaded;
-				UpdateLastOfflineReward(In);
-				ApplySnapshot(In);
-				RequestSave();
-				return;
-			}			
-		}
-		Broadcast();
-	}
+bool UClickerEconomySubsystem::RequestLoad() {
+	FInstancedStruct Saved;
+	if (!SaveManagerSubsystemRef->LoadLevelSnapshot(TAG_Level_Clicker, Saved)) return false;
+
+	const FClickerEconomySnapshot* Loaded = Saved.GetPtr<FClickerEconomySnapshot>();
+	if (!Loaded) return false;
+
+	ApplySnapshot(*Loaded);
+	return true;
 }
 
 TSubclassOf<AGameModeBase> UClickerEconomySubsystem::GetRequiredGameModeClass() const {
@@ -152,10 +149,10 @@ void UClickerEconomySubsystem::ApplySnapshot(const FClickerEconomySnapshot& In) 
 void UClickerEconomySubsystem::UpdateLastOfflineReward(FClickerEconomySnapshot& In) {
 	// Offline Reward max 8 hours
 	const int64 Now = FDateTime::UtcNow().ToUnixTimestamp();
-	const int64 DeltaSec = 
-		(Now - In.LastSaveTime > 28800) ? 
+	const int64 DeltaSec =
+		(Now - In.LastSaveTime > 28800) ?
 		28800 : (Now - In.LastSaveTime);
-	
+
 	LastOfflineReward = In.CurrencyPerSecond * DeltaSec;
 	In.Currency += GetLastOfflineReward();
 }

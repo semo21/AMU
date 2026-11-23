@@ -23,6 +23,6 @@ void AClickerGameMode::BeginPlay() {
 	if (!ensure(Eco)) return;
 
 	ClickerUI->BindEconomySubsystem(Eco);
-	Eco->StartWorld(GetWorld());
+	Eco->StartWorld();
 	ClickerUI->InitializeHUDRoot(PC);
 }
