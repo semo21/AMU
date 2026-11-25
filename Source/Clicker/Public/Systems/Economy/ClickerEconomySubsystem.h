@@ -16,7 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChanged, const FClickerEco
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPassiveIncome, double, AmountPerSec);
 
 /**
- * 
+ *
  */
 UCLASS(BlueprintType)
 class CLICKER_API UClickerEconomySubsystem : public UMyWorldSubsystemBase
@@ -26,11 +26,11 @@ class CLICKER_API UClickerEconomySubsystem : public UMyWorldSubsystemBase
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-	void StartWorld(UWorld* World);
+	void StartWorld();
 	void OnClicked();
 	bool TryUpgrade();
 	void RequestSave();
-	void RequestLoad();
+	bool RequestLoad();
 
 	UFUNCTION(BlueprintPure, Category = "Economy") const FClickerEconomySnapshot& GetSnapshot() const { return ClickerEconomySnapshot; }
 	UFUNCTION(BlueprintPure) double GetLastOfflineReward() const { return LastOfflineReward; }
@@ -53,7 +53,7 @@ private:
 	FClickerEconomySnapshot MakeSnapshot() const;
 	void ApplySnapshot(const FClickerEconomySnapshot& In);
 	void UpdateLastOfflineReward(FClickerEconomySnapshot& In);
-	
+
 	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerSubsystemRef;
 	FClickerEconomySnapshot ClickerEconomySnapshot;
