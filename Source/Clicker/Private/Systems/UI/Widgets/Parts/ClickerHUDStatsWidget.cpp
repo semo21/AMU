@@ -9,11 +9,11 @@ void UClickerHUDStatsWidget::InitializePart_Implementation(UClickerUISubsystem* 
 	Super::InitializePart_Implementation(InUI, InPC);
 }
 
-void UClickerHUDStatsWidget::OnEconomyChangedUI_Implementation(const FClickerEconomySnapshot& Snapshot) {
-	Super::OnEconomyChangedUI_Implementation(Snapshot);
-	Txt_Value_Currency->SetText(FText::AsNumber(Snapshot.Currency));
-	Txt_Value_CPC->SetText(FText::AsNumber(Snapshot.CurrencyPerClick));
-	Txt_Value_UpgradeCost->SetText(FText::AsNumber(FMath::Pow(Snapshot.UpgradeGrowth, Snapshot.UpgradeLevel + 1) * Snapshot.UpgradeCostBase));
+void UClickerHUDStatsWidget::OnEconomyChangedUI_Implementation(const FClickerEconomyStats& Stats) {
+	Super::OnEconomyChangedUI_Implementation(Stats);
+	Txt_Value_Currency->SetText(FText::AsNumber(Stats.Currency));
+	Txt_Value_CPC->SetText(FText::AsNumber(Stats.CurrencyPerClick));
+	Txt_Value_UpgradeCost->SetText(FText::AsNumber(Stats.UpgradeCost));
 
-	Txt_Value_CPS->SetText(FText::AsNumber(Snapshot.CurrencyPerSecond));
+	Txt_Value_CPS->SetText(FText::AsNumber(Stats.CurrencyPerSecond));
 }

@@ -2,13 +2,6 @@
 
 #include "Systems/UI/ClickerUISubsystem.h"
 
-#include "Blueprint/UserWidget.h"
-#include "Components/CanvasPanelSlot.h"
-#include "Engine/GameViewportClient.h"
-#include "Blueprint/WidgetLayoutLibrary.h"
-#include "Kismet/GameplayStatics.h"
-#include "TimerManager.h"
-
 #include "Gameplay/Player/ClickerPlayerController.h"
 #include "Gameplay/GameMode/ClickerGameMode.h"
 #include "Systems/Economy/ClickerEconomySubsystem.h"
@@ -19,6 +12,13 @@
 #include "Systems/UI/Widgets/Toast/IdleRewardTextWidget.h"
 #include "Systems/UI/Settings/ClickerUISettings.h"
 #include "Systems/UI/Data/ActionButton/ActionButtonRegistry.h"
+
+#include "Blueprint/UserWidget.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Engine/GameViewportClient.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
 
 // public field
 void UClickerUISubsystem::Initialize(FSubsystemCollectionBase& Collection) {
@@ -73,13 +73,13 @@ void UClickerUISubsystem::BindEconomySubsystem(UClickerEconomySubsystem* Eco) {
 	EconomySubsystemRef->OnEconomyChanged.AddUniqueDynamic(this, &ThisClass::OnEconomyChanged);
 	EconomySubsystemRef->OnPassiveIncome.AddUniqueDynamic(this, &ThisClass::OnPassiveIncome);
 
-	CachedClickerEconomySnapshot = EconomySubsystemRef->GetSnapshot();
-	OnEconomyChangedUI.Broadcast(CachedClickerEconomySnapshot);
+	CachedClickerEconomyStats = EconomySubsystemRef->GetStats();
+	OnEconomyChangedUI.Broadcast(CachedClickerEconomyStats);
 }
 
-void UClickerUISubsystem::OnEconomyChanged(const FClickerEconomySnapshot& Snapshot) {
-	CachedClickerEconomySnapshot = Snapshot;
-	OnEconomyChangedUI.Broadcast(CachedClickerEconomySnapshot);
+void UClickerUISubsystem::OnEconomyChanged(const FClickerEconomyStats& Stats) {
+	CachedClickerEconomyStats = Stats;
+	OnEconomyChangedUI.Broadcast(CachedClickerEconomyStats);
 }
 
 void UClickerUISubsystem::OnPassiveIncome(double AmountPerSec) {

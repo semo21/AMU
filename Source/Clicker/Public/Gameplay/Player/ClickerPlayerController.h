@@ -9,6 +9,8 @@
 
 #include "ClickerPlayerController.generated.h"
 
+class UClickerEconomySubsystem;
+class UClickerUISubsystem;
 /**
  *
  */
@@ -26,5 +28,14 @@ public:
 	virtual void HandleActionButtonClicked(const FGameplayTag& ActionTag) override;
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	
+
+private:
+	UPROPERTY()
+	TObjectPtr<UClickerEconomySubsystem> ClickerEconomySubsystemRef;
+
+	UPROPERTY()
+	TObjectPtr<UClickerUISubsystem> ClickerUISubsystemRef;
 };

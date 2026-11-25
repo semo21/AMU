@@ -6,19 +6,21 @@
 
 #include "Systems/MyWorldSubsystemBase.h"
 #include "Systems/Economy/Data/ClickerEconomySnapshot.h"
+#include "Systems/Economy/Data/ClickerEconomyStats.h"
 
 #include "ClickerEconomySubsystem.generated.h"
 
 class UClickerUISubsystem;
 class USaveManagerSubsystem;
+class UClickerEconomySettings;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChanged, const FClickerEconomySnapshot&, Snapshot);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChanged, const FClickerEconomyStats&, Stats);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPassiveIncome, double, AmountPerSec);
 
 /**
  *
  */
-UCLASS(BlueprintType)
+UCLASS(BlueprintType, Config=Game, DefaultConfig)
 class CLICKER_API UClickerEconomySubsystem : public UMyWorldSubsystemBase
 {
 	GENERATED_BODY()
@@ -27,13 +29,16 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 	void StartWorld();
-	void OnClicked();
+	double OnClicked();
 	bool TryUpgrade();
 	void RequestSave();
 	bool RequestLoad();
 
-	UFUNCTION(BlueprintPure, Category = "Economy") const FClickerEconomySnapshot& GetSnapshot() const { return ClickerEconomySnapshot; }
-	UFUNCTION(BlueprintPure) double GetLastOfflineReward() const { return LastOfflineReward; }
+	UFUNCTION(BlueprintPure, Category = "Economy") 
+	FClickerEconomyStats GetStats() const;
+
+	UFUNCTION(BlueprintPure) 
+	double GetLastOfflineReward() const { return LastOfflineReward; }
 
 	// Delegate
 	UPROPERTY(BlueprintAssignable, Category = "Economy|Events") FOnEconomyChanged OnEconomyChanged;
@@ -49,13 +54,21 @@ private:
 	void OnTick1Second();
 	void StopAutoSaveTimer();
 	void StopTickTimer();
+	double GetCurrencyPerClick() const;
+	double GetCurrencyPerSecond() const;
 	double GetUpgradeCost() const;
-	FClickerEconomySnapshot MakeSnapshot() const;
 	void ApplySnapshot(const FClickerEconomySnapshot& In);
-	void UpdateLastOfflineReward(FClickerEconomySnapshot& In);
+	void UpdateLastOfflineReward();
+
+	UPROPERTY(Config)
+	TSoftObjectPtr<UClickerEconomySettings> ClickerEconomySettingsAsset;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UClickerEconomySettings> ClickerEconomySettings;
 
 	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerSubsystemRef;
+
 	FClickerEconomySnapshot ClickerEconomySnapshot;
 	FTimerHandle AutoSaveHandle;
 	FTimerHandle TickHandle;

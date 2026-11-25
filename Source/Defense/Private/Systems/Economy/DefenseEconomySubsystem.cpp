@@ -8,8 +8,8 @@
 void UDefenseEconomySubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);
 	
-	EconomySettings = EconomySettingsAsset.LoadSynchronous();
-	UE_LOG(LogTemp, Log, TEXT("UDefenseEconomySubsystem::Initialize / EconomySettings: %s"), EconomySettings ? TEXT("Loaded") : TEXT("Null"));
+	DefenseEconomySettings = DefenseEconomySettingsAsset.LoadSynchronous();
+	UE_LOG(LogTemp, Log, TEXT("UDefenseEconomySubsystem::Initialize / EconomySettings: %s"), DefenseEconomySettings ? TEXT("Loaded") : TEXT("Null"));
 }
 
 TSubclassOf<AGameModeBase> UDefenseEconomySubsystem::GetRequiredGameModeClass() const {
@@ -19,9 +19,9 @@ TSubclassOf<AGameModeBase> UDefenseEconomySubsystem::GetRequiredGameModeClass() 
 double UDefenseEconomySubsystem::CalculateSettlementReward(EDefenseMatchState Result) const {
 	switch (Result) {
 	case EDefenseMatchState::Victory:
-		return EconomySettings ? EconomySettings->VictoryReward : 0.0;
+		return DefenseEconomySettings ? DefenseEconomySettings->VictoryReward : 0.0;
 	case EDefenseMatchState::Defeat:
-		return EconomySettings ? EconomySettings->DefeatReward : 0.0;
+		return DefenseEconomySettings ? DefenseEconomySettings->DefeatReward : 0.0;
 	default:
 		return 0.0;
 	}
