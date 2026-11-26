@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Systems/MyWorldSubsystemBase.h"
 #include "GameplayTagContainer.h"
-#include "Systems/Economy/Data/ClickerEconomySnapshot.h"
+#include "Systems/Economy/Data/ClickerEconomyStats.h"
 
 #include "ClickerUISubsystem.generated.h"
 
@@ -17,10 +17,10 @@ class UClickFloatingTextWidget; class UIdleRewardTextWidget;
 class UClickerUISettings;		class UToastWidgetBase;			
 class UActionButtonRegistry;	
 
-struct FClickerEconomySnapshot;		struct FActionButtonDefinition;
+struct FActionButtonDefinition;
 
-// Economy changed event for UI, passes the new snapshot to update displays
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChangedUI, const FClickerEconomySnapshot&, Snapshot);
+// Economy changed event for UI, passes the new stats to update displays
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChangedUI, const FClickerEconomyStats&, Stats);
 
 UCLASS(Config=Game, DefaultConfig)
 class CLICKER_API UClickerUISubsystem : public UMyWorldSubsystemBase
@@ -36,11 +36,11 @@ public:
 	void ShowReward(double Amount, bool bIsOffline);
 	const UActionButtonRegistry* GetActionButtonRegistry() const { return ActionButtonRegistry; }
 	UFUNCTION()	
-	void OnEconomyChanged(const FClickerEconomySnapshot& Snapshot);
+	void OnEconomyChanged(const FClickerEconomyStats& Stats);
 	UFUNCTION() 
 	void OnPassiveIncome(double AmountPerSec);
 	UFUNCTION(BlueprintCallable, Category="UI|Economy")
-	const FClickerEconomySnapshot& GetCachedClickerEconomySnapshot() const { return CachedClickerEconomySnapshot; }
+	const FClickerEconomyStats& GetCachedClickerEconomyStats() const { return CachedClickerEconomyStats; }
 
 	UPROPERTY(BlueprintAssignable, Category="UI|Events")
 	FOnEconomyChangedUI OnEconomyChangedUI;
@@ -73,7 +73,7 @@ private:
 	void HandlePassiveIncome(double Amount);
 
 	UPROPERTY(Transient) 
-	FClickerEconomySnapshot CachedClickerEconomySnapshot;
+	FClickerEconomyStats CachedClickerEconomyStats;
 	
 	UPROPERTY()
 	TObjectPtr<UClickerEconomySubsystem> EconomySubsystemRef = nullptr;

@@ -29,8 +29,8 @@ protected:
 private:
 
 	UPROPERTY(Config)
-	TSoftObjectPtr<UDefenseEconomySettings> EconomySettingsAsset;
+	TSoftObjectPtr<UDefenseEconomySettings> DefenseEconomySettingsAsset;
 	UPROPERTY(Transient)
-	TObjectPtr<UDefenseEconomySettings> EconomySettings;
+	TObjectPtr<UDefenseEconomySettings> DefenseEconomySettings;
 
 };

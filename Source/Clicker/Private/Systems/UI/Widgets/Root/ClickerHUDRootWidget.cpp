@@ -15,11 +15,11 @@ void UClickerHUDRootWidget::InitializeHUDRoot(UClickerUISubsystem* UI, AClickerP
 	if (Part_DevButtons)		Part_DevButtons->InitializePart(UI, PC);
 
 	UIRef->OnEconomyChangedUI.AddUniqueDynamic(this, &ThisClass::HandleEconomyChangedUI);
-	HandleEconomyChangedUI(UIRef->GetCachedClickerEconomySnapshot());
+	HandleEconomyChangedUI(UIRef->GetCachedClickerEconomyStats());
 }
 
-void UClickerHUDRootWidget::HandleEconomyChangedUI(const FClickerEconomySnapshot& Snapshot) {
-	if (Part_Stats)			Part_Stats->OnEconomyChangedUI(Snapshot);
-	if (Part_PrimaryActions)	Part_PrimaryActions->OnEconomyChangedUI(Snapshot);
-	if (Part_DevButtons)		Part_DevButtons->OnEconomyChangedUI(Snapshot);
+void UClickerHUDRootWidget::HandleEconomyChangedUI(const FClickerEconomyStats& Stats) {
+	if (Part_Stats)			Part_Stats->OnEconomyChangedUI(Stats);
+	if (Part_PrimaryActions)	Part_PrimaryActions->OnEconomyChangedUI(Stats);
+	if (Part_DevButtons)		Part_DevButtons->OnEconomyChangedUI(Stats);
 }

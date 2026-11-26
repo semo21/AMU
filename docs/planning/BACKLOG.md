@@ -10,6 +10,11 @@
 - Clicker 시작 흐름을 OnWorldBeginPlay로 이전 (2026-11-23)
   - 현재는 ClickerGameMode::BeginPlay가 StartWorld를 직접 호출
   - OnWorldBeginPlay는 GameMode BeginPlay보다 먼저 실행되므로, UI 바인딩 -> 경제 시작 -> HUD 초기화 순서를 함께 재설계해야 함
+- DefenseEconomySubsystem Settings 가드를 Initialize의 checkf로 통일 (2026-11-25)
+  - 현재 CalculateSettlementReward에서 사용할 때마다 `? : 0.0`으로 가드, ClickerEconomySubsystem은 로드 시점에 checkf 한 번으로 처리
+- ClickerGameMode::BeginPlay 가드 정리 (2026-11-26)
+  - `if (!ensure(...)) return;` 3개 제거, Clicker 서브시스템과 PC는 ClickerGameMode 월드에서 항상 존재
+  - PC 캐스트는 CastChecked로 교체
 - ActionButton 자립화 (2026-11-21)
   - 태그는 WBP에서 지정, PlayerController는 GetOwningPlayer로 획득, Registry는 GlobalUISubsystem이 소유
   - 호출부가 PC / Registry를 넘겨주는 InitializeButton 제거

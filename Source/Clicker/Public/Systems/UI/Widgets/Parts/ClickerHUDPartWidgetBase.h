@@ -22,8 +22,8 @@ public:
 
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "UI")
-	void OnEconomyChangedUI(const FClickerEconomySnapshot& Snapshot);
-	virtual void OnEconomyChangedUI_Implementation(const FClickerEconomySnapshot& Snapshot);
+	void OnEconomyChangedUI(const FClickerEconomyStats& Stats);
+	virtual void OnEconomyChangedUI_Implementation(const FClickerEconomyStats& Stats);
 
 protected:
 	UPROPERTY(Transient, BlueprintReadOnly)

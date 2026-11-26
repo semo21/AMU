@@ -33,7 +33,7 @@ protected:
 
 private:
 	UFUNCTION()
-	void HandleEconomyChangedUI(const FClickerEconomySnapshot& Snapshot);
+	void HandleEconomyChangedUI(const FClickerEconomyStats& Stats);
 
 protected:
 	UPROPERTY()
