@@ -35,4 +35,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Economy")
 	int64 OfflineRewardMaxSeconds = 28800;	// 8h
+
+	UPROPERTY(EditDefaultsOnly, Category = "Exchange")
+	double ExchangeCurrencyCost = 100.0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Exchange")
+	double ExchangeGlobalCurrencyReward = 1.0;
 };
