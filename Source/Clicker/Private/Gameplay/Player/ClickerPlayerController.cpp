@@ -37,8 +37,9 @@ void AClickerPlayerController::OnBoostClicked() {
 
 }
 
-void AClickerPlayerController::OnTestClicked() {
-	UE_LOG(LogTemp, Warning, TEXT("Test button clicked - this is a placeholder action"));
+void AClickerPlayerController::OnExchangeClicked() {
+	UE_LOG(LogTemp, Warning, TEXT("Exchange button clicked - this is a placeholder action"));
+	ClickerEconomySubsystemRef->TryExchange();
 }
 
 
@@ -59,8 +60,8 @@ void AClickerPlayerController::HandleActionButtonClicked(const FGameplayTag& Act
 	else if (ActionTag.MatchesTagExact(FGameplayTag::RequestGameplayTag("UI.Action.Boost"))) {
 		OnBoostClicked();
 	}
-	else if (ActionTag.MatchesTagExact(FGameplayTag::RequestGameplayTag("UI.Action.Test"))) {
-		OnTestClicked();
+	else if (ActionTag.MatchesTagExact(FGameplayTag::RequestGameplayTag("UI.Action.Exchange"))) {
+		OnExchangeClicked();
 	}
 	else if (ActionTag.MatchesTagExact(FGameplayTag::RequestGameplayTag("UI.Action.Save"))) {
 		OnSaveClicked();

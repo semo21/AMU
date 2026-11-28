@@ -28,7 +28,7 @@ protected:
 	TObjectPtr<UActionButtonWidget> Btn_Boost;
 
 	UPROPERTY(meta = (BindWidgetOptional), BlueprintReadOnly)
-	TObjectPtr<UActionButtonWidget> Btn_Test;
+	TObjectPtr<UActionButtonWidget> Btn_Exchange;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Actions")
 	FGameplayTag UpgradeActionTag;
@@ -37,5 +37,5 @@ protected:
 	FGameplayTag BoostActionTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Actions")
-	FGameplayTag TestActionTag;
+	FGameplayTag ExchangeActionTag;
 };

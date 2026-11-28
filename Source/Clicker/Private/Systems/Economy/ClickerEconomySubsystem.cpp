@@ -7,6 +7,7 @@
 #include "Systems/Save/SaveManagerSubsystem.h"
 #include "Systems/UI/Widgets/Toast/IdleRewardTextWidget.h"
 #include "Systems/Economy/Settings/ClickerEconomySettings.h"
+#include "Systems/Economy/GlobalEconomySubsystem.h"
 
 #include "Engine/GameInstance.h"
 #include "Engine/World.h"
@@ -37,8 +38,11 @@ void UClickerEconomySubsystem::Deinitialize() {
 void UClickerEconomySubsystem::StartWorld() {
 	bWorldStarted = true;
 
+	GlobalEconomySubsystemRef = GetWorld()->GetGameInstance()->GetSubsystem<UGlobalEconomySubsystem>();
+	checkf(GlobalEconomySubsystemRef, TEXT("UClickerEconomySubsystem::StartWorld() / GlobalEconomySubsystemRef is not loaded"));
+
 	SaveManagerSubsystemRef = GetWorld()->GetGameInstance()->GetSubsystem<USaveManagerSubsystem>();
-	check(SaveManagerSubsystemRef);
+	checkf(SaveManagerSubsystemRef, TEXT("UClickerEconomySubsystem::StartWorld() / SaveManagerSubsystemRef is not loaded"));
 
 	if (RequestLoad()) {
 		UpdateLastOfflineReward();
@@ -87,6 +91,19 @@ bool UClickerEconomySubsystem::TryUpgrade() {
 
 	Broadcast();
 	RequestSave();
+	return true;
+}
+
+bool UClickerEconomySubsystem::TryExchange() {
+	if (ClickerEconomySnapshot.Currency < ClickerEconomySettings->ExchangeCurrencyCost) return false;
+	
+	ClickerEconomySnapshot.Currency -= ClickerEconomySettings->ExchangeCurrencyCost;
+
+	Broadcast();
+	RequestSave();
+	
+	GlobalEconomySubsystemRef->AddGlobalCurrency(ClickerEconomySettings->ExchangeGlobalCurrencyReward);
+
 	return true;
 }
 

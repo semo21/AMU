@@ -16,7 +16,7 @@ void UClickerHUDPrimaryActionWidget::InitializePart_Implementation(UClickerUISub
 	if (Btn_Boost && BoostActionTag.IsValid()) {
 		Btn_Boost->InitializeButton(InPC, InUI->GetActionButtonRegistry(), BoostActionTag);
 	}
-	if (Btn_Test && TestActionTag.IsValid()) {
-		Btn_Test->InitializeButton(InPC, InUI->GetActionButtonRegistry(), TestActionTag);
+	if (Btn_Exchange && ExchangeActionTag.IsValid()) {
+		Btn_Exchange->InitializeButton(InPC, InUI->GetActionButtonRegistry(), ExchangeActionTag);
 	}
 }

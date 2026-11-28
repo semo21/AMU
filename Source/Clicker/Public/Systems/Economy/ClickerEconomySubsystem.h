@@ -13,6 +13,7 @@
 class UClickerUISubsystem;
 class USaveManagerSubsystem;
 class UClickerEconomySettings;
+class UGlobalEconomySubsystem;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEconomyChanged, const FClickerEconomyStats&, Stats);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPassiveIncome, double, AmountPerSec);
@@ -31,6 +32,7 @@ public:
 	void StartWorld();
 	double OnClicked();
 	bool TryUpgrade();
+	bool TryExchange();
 	void RequestSave();
 	bool RequestLoad();
 
@@ -65,6 +67,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UClickerEconomySettings> ClickerEconomySettings;
+
+	UPROPERTY()
+	TObjectPtr<UGlobalEconomySubsystem> GlobalEconomySubsystemRef;
 
 	UPROPERTY()
 	TObjectPtr<USaveManagerSubsystem> SaveManagerSubsystemRef;
