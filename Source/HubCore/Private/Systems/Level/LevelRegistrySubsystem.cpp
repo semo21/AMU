@@ -16,6 +16,7 @@ void ULevelRegistrySubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 		checkf(Definition, TEXT("ULevelRegistrySubsystem::Initialize / Empty slot in LevelRegistry"));
 		checkf(!DefinitionsByTag.Contains(Definition->LevelTag), TEXT("ULevelRegistrySubsystem::Initialize / Duplicate level tag: %s"), *Definition->LevelTag.ToString());
 		DefinitionsByTag.Add(Definition->LevelTag, Definition);
+		UE_LOG(LogTemp, Log, TEXT("ULevelRegistrySubsystem::Initialize / Add tag: %s"), *Definition->LevelTag.ToString());
 	}
 }
 
