@@ -12,12 +12,21 @@
   - OnWorldBeginPlay는 GameMode BeginPlay보다 먼저 실행되므로, UI 바인딩 -> 경제 시작 -> HUD 초기화 순서를 함께 재설계해야 함
 - DefenseEconomySubsystem Settings 가드를 Initialize의 checkf로 통일 (2026-11-25)
   - 현재 CalculateSettlementReward에서 사용할 때마다 `? : 0.0`으로 가드, ClickerEconomySubsystem은 로드 시점에 checkf 한 번으로 처리
+- Defense 정산 지급을 DefenseEconomySubsystem으로 이동 (2026-11-27)
+  - 현재 DefenseGameMode::EndMatch가 GlobalEconomy::AddGlobalCurrency를 직접 호출
+  - 레벨 안에서 Global 재화를 부르는 곳은 그 레벨의 Eco로 통일 (Clicker 교환과 동일), GameMode는 매치 종료만 Eco에 알림 (예: DefenseEco->SettleMatch(Result))
 - ClickerGameMode::BeginPlay 가드 정리 (2026-11-26)
   - `if (!ensure(...)) return;` 3개 제거, Clicker 서브시스템과 PC는 ClickerGameMode 월드에서 항상 존재
   - PC 캐스트는 CastChecked로 교체
-- ActionButton 자립화 (2026-11-21)
-  - 태그는 WBP에서 지정, PlayerController는 GetOwningPlayer로 획득, Registry는 GlobalUISubsystem이 소유
-  - 호출부가 PC / Registry를 넘겨주는 InitializeButton 제거
+- ActionButton 구조 개편 (2026-11-21, 2026-11-27 통합)
+  - 자립화: 태그는 WBP 인스턴스에서 지정, PlayerController는 GetOwningPlayer로 획득, Registry는 GlobalUISubsystem이 소유
+    - 호출부가 PC / Registry / 태그를 넘겨주는 InitializeButton 제거
+    - 현재는 인스턴스의 ActionTag(EditAnywhere)를 Part의 `XXXActionTag`가 InitializeButton에서 덮어씀 -> 같은 값을 넣는 곳이 두 군데
+  - 태그 레벨 구분: 공용 액션은 `UI.Action.X`, 레벨 전용 액션은 `UI.Action.<Level>.X` (예: `UI.Action.Clicker.Upgrade`)
+    - 태그는 프로젝트 전체 공용 이름이고, Registry가 하나가 되면 태그 하나 = 라벨/아이콘 하나라 레벨끼리 충돌
+    - Clicker 전용 태그를 한 번에 이름 변경, `GameplayTagRedirects`로 기존 WBP / DA 참조 유지, PC의 문자열도 함께 수정
+    - 사용하지 않는 `UI.Action.Test` 태그 제거
+  - HUD Part도 같은 원칙: InitializePart로 PC를 넘기지 않고 GetOwningPlayer 사용 (Root가 Stats를 내려주는 구조는 유지)
 - 에셋 재저장 후 CoreRedirects 정리 (2026-11-21)
   - 모듈 분리 이후 에셋을 재저장하면 DefaultEngine.ini의 Package / Class / Struct / Enum Redirects 제거 가능
   - ActiveGameNameRedirects 정리 포함
@@ -36,6 +45,8 @@
   - 음수 / 비정상 값 지급 방지
 - Global 재화 저장 방식 검토 (2026-11-21)
   - 현재 재화 변경마다 동기 저장, 자주 버는 장르가 붙으면 끊김 가능
+  - SaveManager의 Save 함수들이 SaveGameObject 갱신과 SaveGameToSlot을 항상 같이 함 -> Clicker 교환처럼 두 스냅샷이 함께 바뀌어도 디스크에 두 번 나눠 쓰게 됨 (사이에 크래시 시 교환 1회분 손실)
+  - 갱신과 디스크 쓰기를 분리하면 한 번에 저장 가능 (2026-11-27)
 
 ## 에셋 / 버전관리
 
